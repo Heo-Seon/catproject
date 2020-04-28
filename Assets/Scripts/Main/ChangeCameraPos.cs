@@ -14,7 +14,7 @@ public class ChangeCameraPos : MonoBehaviour
 
     Button ArrowUI;
 
-    int[] furniture = new int[8];
+    int[] furniture = new int[9];
 
     // Use this for initialization
     void Start()
@@ -60,29 +60,26 @@ public class ChangeCameraPos : MonoBehaviour
     void judgeLocked()
     {
         furniture = DataManager.GetComponent<ControlGameData>().getFurniture();
-        bool unlockcondition = true; // 일단 언록되어있다고 가정되고
         for (int j = 0; j < 4; j++)
         {
-            if (furniture[j] == -1)
-                unlockcondition = false;//하나라도 앞 네개 중 구매 안 한 것 있으면 언록시키기
+            if (furniture[j] == -1){
+                //하나라도 앞 네개를 구매하지 않았으면 lock되어있는 상황임
+                turnOffObj();
+                return;
+            }
         }
-        if (unlockcondition == true)
-        {
-            turnOnObj();
-        }
-        else
-            turnOffObj();
+        // unlock
+        turnOnObj();
     }
 
     public bool returnLocked()
     {
         furniture = DataManager.GetComponent<ControlGameData>().getFurniture();
-        bool unlockcondition = true; // 일단 언록되어있다고 가정되고
         for (int j = 0; j < 4; j++)
         {
             if (furniture[j] == -1)
-                unlockcondition = false;//하나라도 앞 네개 중 구매 안 한 것 있으면 언록시키기
+                return false;//하나라도 앞 네개 중 구매 안 한 것 있으면 locked 상태임
         }
-        return unlockcondition;
+        return true;
     }
 }
